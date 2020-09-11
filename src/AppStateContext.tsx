@@ -1,5 +1,34 @@
 import React, { createContext, useReducer, useContext } from "react";
 
+type Action =
+    | {
+          type: "ADD_LIST";
+          payload: string;
+      }
+    | {
+          type: "ADD_TASK";
+          payload: { text: string; taskId: string };
+      };
+const appStateReducer = (state: AppState, action: Action): AppState => {
+    switch (action.type) {
+        case "ADD_LIST": {
+            // Reducer logic here...
+            return {
+                ...state,
+            };
+        }
+        case "ADD_TASK": {
+            // Reducer logic here...
+            return {
+                ...state,
+            };
+        }
+        default: {
+            return state;
+        }
+    }
+};
+
 const AppStateContext = createContext<AppStateContextProps>(
     {} as AppStateContextProps
 );
@@ -20,13 +49,6 @@ interface List {
 }
 export const useAppState = () => {
     return useContext(AppStateContext);
-};
-export const AppStateProvider = ({ children }: React.PropsWithChildren<{}>) => {
-    return (
-        <AppStateContext.Provider value={{ state: appData }}>
-            {children}
-        </AppStateContext.Provider>
-    );
 };
 
 export interface AppState {
@@ -51,4 +73,12 @@ const appData: AppState = {
             tasks: [{ id: "c3", text: "Begin to use static typing" }],
         },
     ],
+};
+export const AppStateProvider = ({ children }: React.PropsWithChildren<{}>) => {
+    const [state, dispatch] = useReducer(appStateReducer, appData);
+    return (
+        <AppStateContext.Provider value={{ state, dispatch }}>
+            {children}
+        </AppStateContext.Provider>
+    );
 };
