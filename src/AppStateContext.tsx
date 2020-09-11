@@ -12,9 +12,12 @@ type Action =
 const appStateReducer = (state: AppState, action: Action): AppState => {
     switch (action.type) {
         case "ADD_LIST": {
-            // Reducer logic here...
             return {
                 ...state,
+                lists: [
+                    ...state.lists,
+                    { id: uuid(), text: action.payload, tasks: [] },
+                ],
             };
         }
         case "ADD_TASK": {
@@ -55,6 +58,15 @@ export interface AppState {
     lists: List[];
 }
 
+export const AppStateProvider = ({ children }: React.PropsWithChildren<{}>) => {
+    const [state, dispatch] = useReducer(appStateReducer, appData);
+    return (
+        <AppStateContext.Provider value={{ state, dispatch }}>
+            {children}
+        </AppStateContext.Provider>
+    );
+};
+
 const appData: AppState = {
     lists: [
         {
@@ -73,12 +85,4 @@ const appData: AppState = {
             tasks: [{ id: "c3", text: "Begin to use static typing" }],
         },
     ],
-};
-export const AppStateProvider = ({ children }: React.PropsWithChildren<{}>) => {
-    const [state, dispatch] = useReducer(appStateReducer, appData);
-    return (
-        <AppStateContext.Provider value={{ state, dispatch }}>
-            {children}
-        </AppStateContext.Provider>
-    );
 };
