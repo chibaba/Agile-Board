@@ -1,4 +1,4 @@
-import React, { createContext } from "react";
+import React, { createContext, useReducer, useContext } from "react";
 
 const AppStateContext = createContext<AppStateContextProps>(
     {} as AppStateContextProps
@@ -18,7 +18,9 @@ interface List {
     text: string;
     tasks: Task[];
 }
-
+export const useAppState = () => {
+    return useContext(AppStateContext);
+};
 export const AppStateProvider = ({ children }: React.PropsWithChildren<{}>) => {
     return (
         <AppStateContext.Provider value={{ state: appData }}>
