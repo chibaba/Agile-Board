@@ -1,15 +1,25 @@
-import React,  from "react";
+import React from "react";
 import { ColumnContainer, ColumnTitle } from "./styles";
 
-export const Column = () => ({
+interface ColumnProps {
+    text: String;
+}
+
+// export const Column = ({text}: ColumnProps) => {
+//     return (
+//         <ColumnContainer>
+//         <ColumnTitle>{text}</ColumnTitle>
+//         </ColumnContainer>
+//     )
+// }
+export const Column = ({
     text,
-    children
+    children,
 }: React.PropsWithChildren<ColumnProps>) => {
     return (
         <ColumnContainer>
-           <ColumnTitle>{text}</ColumnTitle>
-           {children}
+            <ColumnTitle>{text}</ColumnTitle>
+            {children}
         </ColumnContainer>
-    )
-}
-    
+    );
+};
