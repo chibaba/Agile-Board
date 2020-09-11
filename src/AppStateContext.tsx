@@ -1,3 +1,13 @@
+import React, { createContext } from "react";
+
+const AppStateContext = createContext<AppStateContextProps>(
+    {} as AppStateContextProps
+);
+
+interface AppStateContextProps {
+    state: AppState;
+}
+
 interface Task {
     id: string;
     text: string;
@@ -8,6 +18,14 @@ interface List {
     text: string;
     tasks: Task[];
 }
+
+export const AppStateProvider = ({ children }: React.PropsWithChildren<{}>) => {
+    return (
+        <AppStateContext.Provider value={{ state: appData }}>
+            {children}
+        </AppStateContext.Provider>
+    );
+};
 
 export interface AppState {
     lists: List[];
