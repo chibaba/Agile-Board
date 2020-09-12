@@ -49,6 +49,10 @@ const appStateReducer = (state: AppState, action: Action): AppState => {
             };
         }
 
+        case "SET_DRAGGED_ITEM": {
+            return { ...state, draggedItem: action.payload };
+        }
+
         case "ADD_TASK": {
             const targetLaneIndex = findItemIndexById(
                 state.lists,
