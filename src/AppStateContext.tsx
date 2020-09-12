@@ -1,6 +1,27 @@
 import React, { createContext, useReducer, useContext } from "react";
 import { findItemIndexById } from "./utils/findItemById";
 import uuid from "uuid";
+import { moveItem } from "./moveItem";
+
+const appData: AppState = {
+    lists: [
+        {
+            id: "0",
+            text: "To Do",
+            tasks: [{ id: "c0", text: "Generate App Scaffold" }],
+        },
+        {
+            id: "1",
+            text: "In Progress",
+            tasks: [{ id: "c2", text: "Learn Typescript" }],
+        },
+        {
+            id: "2",
+            text: "Done",
+            tasks: [{ id: "c3", text: "Begin to use static typing" }],
+        },
+    ],
+};
 
 type Action =
     | {
@@ -10,7 +31,12 @@ type Action =
     | {
           type: "ADD_TASK";
           payload: { text: string; taskId: string };
+      }
+    | {
+          type: "SET_DRAGGED_ITEM";
+          payload: DragItem | undefined;
       };
+
 const appStateReducer = (state: AppState, action: Action): AppState => {
     switch (action.type) {
         case "ADD_LIST": {
@@ -22,6 +48,7 @@ const appStateReducer = (state: AppState, action: Action): AppState => {
                 ],
             };
         }
+
         case "ADD_TASK": {
             const targetLaneIndex = findItemIndexById(
                 state.lists,
@@ -34,6 +61,12 @@ const appStateReducer = (state: AppState, action: Action): AppState => {
             return {
                 ...state,
             };
+        }
+
+        case "MOVE_LIST": {
+            const { dragIndex, hoverIndex } = action.payload;
+            state.lists = moveItem(state.lists, dragIndex, hoverIndex);
+            return { ...state };
         }
         default: {
             return state;
@@ -74,24 +107,4 @@ export const AppStateProvider = ({ children }: React.PropsWithChildren<{}>) => {
             {children}
         </AppStateContext.Provider>
     );
-};
-
-const appData: AppState = {
-    lists: [
-        {
-            id: "0",
-            text: "To Do",
-            tasks: [{ id: "c0", text: "Generate App Scaffold" }],
-        },
-        {
-            id: "1",
-            text: "In Progress",
-            tasks: [{ id: "c2", text: "Learn Typescript" }],
-        },
-        {
-            id: "2",
-            text: "Done",
-            tasks: [{ id: "c3", text: "Begin to use static typing" }],
-        },
-    ],
 };
