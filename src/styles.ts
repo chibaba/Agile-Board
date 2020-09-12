@@ -4,6 +4,13 @@ interface AddItemButtonProps {
     dark?: boolean;
 }
 
+interface DragPreviewContainerProps {
+    isHidden?: boolean;
+}
+
+export const DragPreviewContainer = styled.div<DragPreviewContainerProps>`
+    opacity: ${(props) => (props.isHidden ? 0.3 : 1)};
+`;
 export const AppContainer = styled.div`
     align-items: flex-start;
     background-color: #3179ba;
