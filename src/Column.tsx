@@ -18,7 +18,7 @@ const [, drop] = useDrop({
     accept: "COLUMN",
     hover(item: DragItem) {
         const dragIndex = item.index;
-        const hoverIndex = index;
+        const hoverIndex = item.index;
         if (dragIndex === hoverIndex) {
             return;
         }
