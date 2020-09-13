@@ -6,10 +6,12 @@ import { Card } from "./Card";
 import { useDrop } from "react-dnd";
 import { useItemDrag } from "./useItemDrag";
 import { isHidden } from "./isHidden";
-
+import { DragItem } from "./DragItem";
 interface ColumnProps {
     text: String;
     index: number;
+    id: String;
+    isPreview?: boolean;
 }
 
 const [, drop] = useDrop({
@@ -24,7 +26,7 @@ const [, drop] = useDrop({
         item.index = hoverIndex;
     },
 });
-export const Column = ({ text, index, id }: ColumnProps) => {
+export const Column = ({ text, index, id, isPreview }: ColumnProps) => {
     const { state, dispatch } = useAppState();
     const ref = useRef<HTMLDivElement>(null);
 
