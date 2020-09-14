@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useRef } from "react";
+import { useDrop } from "react-dnd";
 
 import { CardContainer } from "./styles";
-import { CardDragItem } from "./DragItem";
 import { useAppState } from "./AppStateContext";
 import { useItemDrag } from "./useItemDrag";
+import { isHidden } from "./utils/isHidden";
+import { DragItem } from "./DragItem";
 
 interface CardProps {
     text: string;
@@ -19,24 +21,39 @@ export const Card = ({ text, id, index, columnId, isPreview }: CardProps) => {
     const { drag } = useItemDrag({ type: "CARD", id, index, text, columnId });
     const [, drop] = useDrop({
         accept: "CARD",
-        hover(item: CardDragItem) {
-            if (item.id === id) {
-                return;
-            }
-            const dragIndex = item.index;
-            const hoverIndex = index;
-            const sourceColumn = item.columnId;
-            const targetColumn = item.columnId;
+        hover(item: DragItem) {
+            if (item.type === "CARD") {
+                if (item.id === id) {
+                    return;
+                }
+                const dragIndex = item.index;
+                const hoverIndex = index;
+                const sourceColumn = item.columnId;
+                const targetColumn = item.columnId;
 
-            dispatch({
-                type: "MOVE_TASK",
-                payload: { dragIndex, hoverIndex, sourceColumn, targetColumn },
-            });
-            item.index = hoverIndex;
-            item.columnId = targetColumn;
+                dispatch({
+                    type: "MOVE_TASK",
+                    payload: {
+                        dragIndex,
+                        hoverIndex,
+                        sourceColumn,
+                        targetColumn,
+                    },
+                });
+                item.index = hoverIndex;
+                item.columnId = targetColumn;
+            }
         },
     });
-    export const Card = ({ text }: CardProps) => {
-        return <CardContainer>{text}</CardContainer>;
-    };
+    drag(drop(ref));
+
+    return (
+        <CardContainer
+            isHidden={isHidden(isPreview, state.draggedItem, "CARD", id)}
+            isPreview={isPreview}
+            ref={ref}
+        >
+            {text}
+        </CardContainer>
+    );
 };
