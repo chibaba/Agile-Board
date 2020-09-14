@@ -1,11 +1,10 @@
 import React, { useRef } from "react";
-import { useDrop } from "react-dnd";
-
 import { CardContainer } from "./styles";
-import { useAppState } from "./AppStateContext";
 import { useItemDrag } from "./useItemDrag";
-import { isHidden } from "./utils/isHidden";
+import { useDrop } from "react-dnd";
 import { DragItem } from "./DragItem";
+import { useAppState } from "./AppStateContext";
+import { isHidden } from "./utils/isHidden";
 
 interface CardProps {
     text: string;
@@ -26,10 +25,11 @@ export const Card = ({ text, id, index, columnId, isPreview }: CardProps) => {
                 if (item.id === id) {
                     return;
                 }
+
                 const dragIndex = item.index;
                 const hoverIndex = index;
                 const sourceColumn = item.columnId;
-                const targetColumn = item.columnId;
+                const targetColumn = columnId;
 
                 dispatch({
                     type: "MOVE_TASK",
@@ -45,6 +45,7 @@ export const Card = ({ text, id, index, columnId, isPreview }: CardProps) => {
             }
         },
     });
+
     drag(drop(ref));
 
     return (
