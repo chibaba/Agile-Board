@@ -15,7 +15,15 @@ const [, drop] = useDrop({
         }
         const dragIndex = item.index;
         const hoverIndex = index;
-        const targetColumn = columnId;
+        const sourceColumn = item.columnId;
+        const targetColumn = item.columnId;
+
+        dispatch({
+            type: "MOVE_TASK",
+            payload: { dragIndex, hoverIndex, sourceColumn, targetColumn },
+        });
+        item.index = hoverIndex;
+        item.columnId = targetColumn;
     },
 });
 export const Card = ({ text }: CardProps) => {

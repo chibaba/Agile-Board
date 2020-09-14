@@ -7,6 +7,8 @@ import { useDrop } from "react-dnd";
 import { useItemDrag } from "./useItemDrag";
 import { isHidden } from "./isHidden";
 import { DragItem } from "./DragItem";
+
+
 interface ColumnProps {
     text: String;
     index: number;
@@ -15,13 +17,29 @@ interface ColumnProps {
 }
 
 const [, drop] = useDrop({
-    accept: "COLUMN",
+    accept: ["COLUMN", "CARD"]
     hover(item: DragItem) {
+        if(item.type === "COLUMN") {
+            // ...DRAGGING COLUMN
+        }
         const dragIndex = item.index;
-        const hoverIndex = item.index;
+        const hoverIndex = 0;
+        const sourceColumn = item.columnId
+        const targetColumn = id
+
+        if(sourceColumn === targetColumn) {
+            return
+        }
         if (dragIndex === hoverIndex) {
             return;
         }
+        dispatch({
+            type: "MOVE_MASK",
+            payload: { dragIndex, hoverIndex,sourceColumn, targetColumn}
+        })
+        item.index = hoverIndex
+        item.columnId = targetColumn
+        
         dispatch({ type: "MOVE_LIST", payload: { dragIndex, hoverIndex } });
         item.index = hoverIndex;
     },
