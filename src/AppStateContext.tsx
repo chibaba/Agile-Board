@@ -1,11 +1,12 @@
 import React, { createContext, useReducer, useContext } from "react";
 import { findItemIndexById } from "./utils/findItemById";
-import uuid from "uuid";
+import { nanoid } from "nanoid";
+
 import { moveItem } from "./utils/moveItem";
-import { withData } from "./withData";
 import { DragItem } from "./DragItem";
 
 const appData: AppState = {
+    draggedItem: undefined,
     lists: [
         {
             id: "0",
@@ -36,9 +37,8 @@ interface List {
 }
 
 export interface AppState {
-    draggedItem: DragItem | undefined
+    draggedItem: DragItem | undefined;
     lists: List[];
-
 }
 
 type Action =
@@ -54,22 +54,22 @@ type Action =
           type: "SET_DRAGGED_ITEM";
           payload: DragItem | undefined;
       }
-    |  {
-    type: "MOVE_TASK";
-    payload: {
-        dragIndex: number;
-        hoverIndex: number;
-        sourceColumn: string;
-        targetColumn: string;
-    }
-}
-|{
-    type: "MOVE_LIST"
-    payload: {
-        dragIndex: number
-        hoverIndex: number
-    }
-}
+    | {
+          type: "MOVE_TASK";
+          payload: {
+              dragIndex: number;
+              hoverIndex: number;
+              sourceColumn: string;
+              targetColumn: string;
+          };
+      }
+    | {
+          type: "MOVE_LIST";
+          payload: {
+              dragIndex: number;
+              hoverIndex: number;
+          };
+      };
 
 const appStateReducer = (state: AppState, action: Action): AppState => {
     switch (action.type) {
@@ -78,7 +78,7 @@ const appStateReducer = (state: AppState, action: Action): AppState => {
                 ...state,
                 lists: [
                     ...state.lists,
-                    { id: uuid(), text: action.payload, tasks: [] },
+                    { id: nanoid(), text: action.payload, tasks: [] },
                 ],
             };
         }
@@ -93,7 +93,7 @@ const appStateReducer = (state: AppState, action: Action): AppState => {
                 action.payload.taskId
             );
             state.lists[targetLaneIndex].tasks.push({
-                id: uuid(),
+                id: nanoid(),
                 text: action.payload.text,
             });
             return {
@@ -140,23 +140,19 @@ const AppStateContext = createContext<AppStateContextProps>(
 
 interface AppStateContextProps {
     state: AppState;
+    dispatch: React.Dispatch<any>;
 }
 
-
-export const useAppState = () => {
-    return useContext(AppStateContext);
-};
-
-
-
-export const AppStateProvider = withData(({ children , initialState}: React.PropsWithChildren<{initialState: AppState}>) => {
+export const AppStateProvider = ({ children }: React.PropsWithChildren<{}>) => {
     const [state, dispatch] = useReducer(appStateReducer, appData);
-    useEffect(() => {
-        save(state);
-    }, [state]);
+
     return (
         <AppStateContext.Provider value={{ state, dispatch }}>
             {children}
         </AppStateContext.Provider>
     );
+};
+
+export const useAppState = () => {
+    return useContext(AppStateContext);
 };
