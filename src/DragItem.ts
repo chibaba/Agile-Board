@@ -11,3 +11,5 @@ export type ColumnDragItem = {
     text: string;
     type: "COLUMN";
 };
+
+export type DragItem = CardDragItem | ColumnDragItem;

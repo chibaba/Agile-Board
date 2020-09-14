@@ -3,6 +3,7 @@ import { findItemIndexById } from "./utils/findItemById";
 import uuid from "uuid";
 import { moveItem } from "./utils/moveItem";
 import { withData } from "./withData";
+import { DragItem } from "./DragItem";
 
 const appData: AppState = {
     lists: [
@@ -23,6 +24,22 @@ const appData: AppState = {
         },
     ],
 };
+interface Task {
+    id: string;
+    text: string;
+}
+
+interface List {
+    id: string;
+    text: string;
+    tasks: Task[];
+}
+
+export interface AppState {
+    draggedItem: DragItem | undefined
+    lists: List[];
+
+}
 
 type Action =
     | {
@@ -36,14 +53,21 @@ type Action =
     | {
           type: "SET_DRAGGED_ITEM";
           payload: DragItem | undefined;
-      };
-{
+      }
+    |  {
     type: "MOVE_TASK";
     payload: {
         dragIndex: number;
         hoverIndex: number;
         sourceColumn: string;
         targetColumn: string;
+    }
+}
+|{
+    type: "MOVE_LIST"
+    payload: {
+        dragIndex: number
+        hoverIndex: number
     }
 }
 
@@ -118,23 +142,12 @@ interface AppStateContextProps {
     state: AppState;
 }
 
-interface Task {
-    id: string;
-    text: string;
-}
 
-interface List {
-    id: string;
-    text: string;
-    tasks: Task[];
-}
 export const useAppState = () => {
     return useContext(AppStateContext);
 };
 
-export interface AppState {
-    lists: List[];
-}
+
 
 export const AppStateProvider = withData(({ children , initialState}: React.PropsWithChildren<{initialState: AppState}>) => {
     const [state, dispatch] = useReducer(appStateReducer, appData);

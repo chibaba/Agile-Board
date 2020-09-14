@@ -3,6 +3,7 @@ import { AppContainer } from "./styles";
 import { Column } from "./Column";
 import { AddNewItem } from "./AddNewItem";
 import { useAppState } from "./AppStateContext";
+import { CustomDragLayer } from "./CustomDragLayer";
 
 const App = () => {
     const { state, dispatch } = useAppState();
