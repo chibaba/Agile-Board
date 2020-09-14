@@ -136,7 +136,7 @@ export interface AppState {
     lists: List[];
 }
 
-export const AppStateProvider = ({ children }: React.PropsWithChildren<{}>) => {
+export const AppStateProvider = withData(({ children , initialState}: React.PropsWithChildren<{initialState: AppState}>) => {
     const [state, dispatch] = useReducer(appStateReducer, appData);
     useEffect(() => {
         save(state);
