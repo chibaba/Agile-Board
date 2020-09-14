@@ -5,7 +5,7 @@ import { useAppState } from "./AppStateContext";
 import { Card } from "./Card";
 import { useDrop } from "react-dnd";
 import { useItemDrag } from "./useItemDrag";
-import { isHidden } from "./isHidden";
+import { isHidden } from "./utils/isHidden";
 import { DragItem } from "./DragItem";
 
 

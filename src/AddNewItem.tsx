@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { NewItemForm } from "./NewItemForm";
 
-// import { AddItemButton, NewItemButton } from "./styles";
+import { AddItemButton } from "./styles";
 
 interface AddNewItemProps {
     onAdd(text: string): void;
@@ -12,7 +12,7 @@ interface AddNewItemProps {
 
 export const AddNewItem = (props: AddNewItemProps) => {
     const [showForm, setShowForm] = useState(false);
-    const { onAdd, toggleButtonText } = props;
+    const { onAdd, toggleButtonText, dark } = props;
 
     if (showForm) {
         return (
@@ -26,6 +26,8 @@ export const AddNewItem = (props: AddNewItemProps) => {
         );
     }
     return (
-        <button onClick={() => setShowForm(true)}>{toggleButtonText}</button>
+        <AddItemButton dark={dark} onClick={() => setShowForm(true)}>
+            {toggleButtonText}
+        </AddItemButton>
     );
 };
