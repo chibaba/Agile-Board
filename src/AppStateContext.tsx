@@ -2,6 +2,7 @@ import React, { createContext, useReducer, useContext } from "react";
 import { findItemIndexById } from "./utils/findItemById";
 import uuid from "uuid";
 import { moveItem } from "./moveItem";
+import { withData } from "./withData";
 
 const appData: AppState = {
     lists: [
@@ -137,6 +138,9 @@ export interface AppState {
 
 export const AppStateProvider = ({ children }: React.PropsWithChildren<{}>) => {
     const [state, dispatch] = useReducer(appStateReducer, appData);
+    useEffect(() => {
+        save(state);
+    }, [state]);
     return (
         <AppStateContext.Provider value={{ state, dispatch }}>
             {children}
