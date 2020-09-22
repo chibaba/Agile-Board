@@ -1,5 +1,5 @@
 import { DragItem } from "../DragItem";
-export const isHidden = (
+export const isHidden =(
     isPreview: boolean | undefined,
     draggedItem: DragItem | undefined,
     itemType: string,
@@ -11,4 +11,5 @@ export const isHidden = (
             draggedItem.type === itemType &&
             draggedItem.id === id
     );
-};
+}
+
