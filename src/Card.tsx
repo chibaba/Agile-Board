@@ -14,7 +14,7 @@ interface CardProps {
     isPreview?: boolean;
 }
 
-export const Card = ({ text, id, index, columnId, isPreview }: CardProps) => {
+export const Card = ({ text, id, index, columnId, isPreview}: CardProps) => {
     const { state, dispatch } = useAppState();
     const ref = useRef<HTMLDivElement>(null);
     const { drag } = useItemDrag({ type: "CARD", id, index, text, columnId });
